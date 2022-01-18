@@ -1,6 +1,7 @@
 kubectl apply -f ./loadbalancer/ingressroute.yaml
 kubectl apply -f ./loadbalancer/deployment.yaml
 kubectl apply -f ./loadbalancer/service.yaml
+kubectl apply -f ./loadbalancer/middleware.yaml
 kubectl apply -f ./loadbalancer/traefik.yaml
 # kubectl apply -f ./loadbalancer/test.yaml
 

@@ -1,3 +1,5 @@
+# routing 관련 설정은 이 파일에서 제어
+
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
@@ -7,11 +9,29 @@ spec:
   entryPoints:
     - web
   routes:
-  - match: PathPrefix(`/`)
+  - match: PathPrefix(`/api`)
     kind: Rule
     services:
     - name: imaging-server-svc
       port: 3000
+    middlewares:
+    - name: stripprefix
+
+  - match: PathPrefix(`/els`)
+    kind: Rule
+    services:
+    - name: elasticsearch-svc
+      port: 9200
+    middlewares:
+    - name: stripprefix
+
+  - match: PathPrefix(`/kibana`)
+    kind: Rule
+    services:
+    - name: kibana-svc
+      port: 5601
+    middlewares:
+    - name: stripprefix
 
 ---
 apiVersion: traefik.containo.us/v1alpha1
@@ -23,10 +43,29 @@ spec:
   entryPoints:
     - websecure
   routes:
-  - match: PathPrefix(`/`)
+  - match: PathPrefix(`/api`)
     kind: Rule
     services:
     - name: imaging-server-svc
       port: 3000
+    middlewares:
+    - name: stripprefix
+
+  - match: PathPrefix(`/els`)
+    kind: Rule
+    services:
+    - name: elasticsearch-svc
+      port: 9200
+    middlewares:
+    - name: stripprefix
+
+  - match: PathPrefix(`/kibana`)
+    kind: Rule
+    services:
+    - name: kibana-svc
+      port: 5601
+    middlewares:
+    - name: stripprefix
+
   tls:
     certResolver: myresolver
