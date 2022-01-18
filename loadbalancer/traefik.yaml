@@ -7,11 +7,11 @@ spec:
   entryPoints:
     - web
   routes:
-  - match: PathPrefix(`/notls`)
+  - match: PathPrefix(`/`)
     kind: Rule
     services:
-    - name: whoami
-      port: 80
+    - name: imaging-server-svc
+      port: 3000
 
 ---
 apiVersion: traefik.containo.us/v1alpha1
@@ -23,10 +23,10 @@ spec:
   entryPoints:
     - websecure
   routes:
-  - match: PathPrefix(`/tls`)
+  - match: PathPrefix(`/`)
     kind: Rule
     services:
-    - name: whoami
-      port: 80
+    - name: imaging-server-svc
+      port: 3000
   tls:
     certResolver: myresolver

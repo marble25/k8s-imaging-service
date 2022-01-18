@@ -25,11 +25,9 @@ kind: Service
 metadata:
   name: imaging-server-svc
 spec:
-  type: NodePort
   selector:
     app: imaging-server
   ports:
     - protocol: TCP
       port: 3000
-      targetPort: 3000
       
