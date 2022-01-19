@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: imaging-uploader
+  labels:
+    app: imaging-uploader
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: imaging-uploader
+  template:
+    metadata:
+      labels:
+        app: imaging-uploader
+    spec:
+      containers:
+      - name: imaging-uploader
+        image: ljiho1998/imaging-uploader
+        imagePullPolicy: "Always"
+        ports:
+        - containerPort: 4004
+        env:
+          - name: RABBITMQ_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: queue-default-user
+                key: username
+          - name: RABBITMQ_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: queue-default-user
+                key: password
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: imaging-uploader-svc
+spec:
+  selector:
+    app: imaging-uploader
+  ports:
+    - protocol: TCP
+      port: 4004
+      
