@@ -17,8 +17,20 @@ spec:
       containers:
       - name: imaging-server
         image: ljiho1998/imaging-server
+        imagePullPolicy: "Always"
         ports:
         - containerPort: 3000
+        env:
+          - name: RABBITMQ_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: queue-default-user
+                key: username
+          - name: RABBITMQ_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: queue-default-user
+                key: password
 ---
 apiVersion: v1
 kind: Service
