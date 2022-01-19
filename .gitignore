@@ -20,3 +20,5 @@ lude
 .vscode/
 bin/
 imgsvc
+
+.env
