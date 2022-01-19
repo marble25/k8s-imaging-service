@@ -9,29 +9,41 @@ spec:
   entryPoints:
     - web
   routes:
-  - match: PathPrefix(`/api`)
+  - match: Host(`traefik.example.com`)
+    kind: Rule
+    services:
+    - name: api@internal
+      kind: TraefikService
+
+  - match: Host(`api.example.com`)
     kind: Rule
     services:
     - name: imaging-server-svc
       port: 3000
-    middlewares:
-    - name: stripprefix
 
-  - match: PathPrefix(`/els`)
+  - match: Host(`es.api.example.com`)
     kind: Rule
     services:
     - name: elasticsearch-svc
       port: 9200
-    middlewares:
-    - name: stripprefix
 
-  - match: PathPrefix(`/kibana`)
+  - match: Host(`kibana.example.com`)
     kind: Rule
     services:
     - name: kibana-svc
       port: 5601
-    middlewares:
-    - name: stripprefix
+
+  - match: Host(`mq.api.example.com`)
+    kind: Rule
+    services:
+    - name: queue
+      port: 5672
+
+  - match: Host(`rabbitmq.example.com`)
+    kind: Rule
+    services:
+    - name: queue
+      port: 15672
 
 ---
 apiVersion: traefik.containo.us/v1alpha1
@@ -43,29 +55,41 @@ spec:
   entryPoints:
     - websecure
   routes:
-  - match: PathPrefix(`/api`)
+  - match: Host(`traefik.example.com`)
+    kind: Rule
+    services:
+    - name: api@internal
+      kind: TraefikService
+
+  - match: Host(`api.example.com`)
     kind: Rule
     services:
     - name: imaging-server-svc
       port: 3000
-    middlewares:
-    - name: stripprefix
 
-  - match: PathPrefix(`/els`)
+  - match: Host(`es.api.example.com`)
     kind: Rule
     services:
     - name: elasticsearch-svc
       port: 9200
-    middlewares:
-    - name: stripprefix
 
-  - match: PathPrefix(`/kibana`)
+  - match: Host(`kibana.example.com`)
     kind: Rule
     services:
     - name: kibana-svc
       port: 5601
-    middlewares:
-    - name: stripprefix
+
+  - match: Host(`mq.api.example.com`)
+    kind: Rule
+    services:
+    - name: queue
+      port: 5672
+
+  - match: Host(`rabbitmq.example.com`)
+    kind: Rule
+    services:
+    - name: queue
+      port: 15672
 
   tls:
     certResolver: myresolver
